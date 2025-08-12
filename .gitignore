@@ -1,0 +1,30 @@
+# VScodium/VS Code
+.vscode/
+.code-workspace
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Terraform
+*.tfstate
+*.tfstate.*
+.terraform/
+crash.log
+override.tf
+override.tf.json
+terraform.tfvars
+*.tfvars
+
+# Ansible
+*.retry
+*.log
+
+# Notebooks/outputs
+*.ipynb_checkpoints/
+
+# OS cruft
+.DS_Store
+Thumbs.db
