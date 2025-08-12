@@ -1,0 +1,5 @@
+ibm-watsonx-ai
+boto3
+requests
+rich
+jmespath
