@@ -1,26 +1,27 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-cd /workspaces/infra-net-automation-watsonx-lab || cd "$PWD"
+REPO=/workspaces/infra-net-automation-watsonx-lab
+cd "$REPO" || cd "$PWD"
 
-# Ensure ownership of workspace (in case prior runs created root-owned files)
-if [ -d .venv ] && [ ! -w .venv ]; then
-  echo "[postCreate] Fixing ownership of .venv"
-  sudo chown -R "$USER":"$USER" .venv || true
+VENV="$HOME/.venv"
+
+# (Re)create venv in HOME if missing
+if [ ! -d "$VENV" ]; then
+  echo "[postCreate] Creating Python venv at $VENV"
+  python3 -m venv "$VENV"
 fi
 
-# Create (or recreate) project venv
-if [ ! -d .venv ]; then
-  echo "[postCreate] Creating Python venv"
-  python3 -m venv .venv
-fi
-
-# Activate venv and install deps
-. .venv/bin/activate
+# Activate and install deps
+. "$VENV/bin/activate"
 python -m pip install --upgrade pip
 if [ -f requirements.txt ]; then
   pip install -r requirements.txt
 fi
+
+# Convenience: write an activation helper into the repo
+echo '. "$HOME/.venv/bin/activate"' > "$REPO/activate-venv.sh"
+chmod +x "$REPO/activate-venv.sh"
 
 echo "== Versions =="
 terraform -version || true
