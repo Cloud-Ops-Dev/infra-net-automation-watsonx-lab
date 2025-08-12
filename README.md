@@ -32,3 +32,12 @@ diagrams/
 2. Automate host configuration with Ansible.
 3. Demonstrate WatsonX-driven infra/network automation.
 4. Optional: drive Cisco lab tasks (config gen, checks, change plans).
+
+## Quick start
+
+1) Copy .env.example to .env and fill in IBM/AWS creds.
+2) Build devcontainer (already done).
+3) `source $HOME/.venv/bin/activate` in container.
+4) `python watsonx/scripts/hello_wx.py`
+
+Terraform: see terraform/aws and terraform/ibm.

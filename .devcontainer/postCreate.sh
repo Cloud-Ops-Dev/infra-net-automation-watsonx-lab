@@ -20,8 +20,6 @@ if [ -f requirements.txt ]; then
 fi
 
 # Convenience: write an activation helper into the repo
-echo '. "$HOME/.venv/bin/activate"' > "$REPO/activate-venv.sh"
-chmod +x "$REPO/activate-venv.sh"
 
 echo "== Versions =="
 terraform -version || true

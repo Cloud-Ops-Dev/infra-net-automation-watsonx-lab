@@ -1,0 +1,5 @@
+- name: Prep servers for WatsonX lab
+  hosts: all
+  become: true
+  roles:
+    - role: common

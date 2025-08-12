@@ -6,11 +6,12 @@ ENV DEBIAN_FRONTEND=noninteractive \
     TZ=UTC \
     USER=vscode
 
-# Base OS deps
+# Base OS deps (+ ansible via apt; Python tooling but no pip installs here)
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates curl wget git unzip gnupg lsb-release software-properties-common \
-    python3 python3-pip python3-venv python3-dev build-essential \
+    python3 python3-venv python3-dev build-essential \
     openssh-client jq make \
+    ansible \
     && rm -rf /var/lib/apt/lists/*
 
 # Create non-root user
@@ -33,14 +34,7 @@ RUN curl -sSL "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "/tm
 # IBM Cloud CLI
 RUN curl -fsSL https://clis.cloud.ibm.com/install/linux | bash
 
-# Python tools & SDKs
-RUN pip3 install --no-cache-dir \
-    ansible ansible-lint \
-    boto3 botocore \
-    ibm-cloud-sdk-core ibm-watsonx-ai \
-    jmespath requests rich
-
-# TFLint (use latest release)
+# TFLint (latest)
 RUN curl -sSL https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
 
 # Shell niceties

@@ -28,3 +28,9 @@ terraform.tfvars
 # OS cruft
 .DS_Store
 Thumbs.db
+
+.env
+.venv/
+*.tfstate
+*.tfstate.backup
+.terraform/
