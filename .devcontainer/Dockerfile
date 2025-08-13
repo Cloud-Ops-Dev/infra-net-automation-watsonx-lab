@@ -1,6 +1,8 @@
 # syntax=docker/dockerfile:1
 ARG UBUNTU_VERSION=24.04
 FROM ubuntu:${UBUNTU_VERSION}
+ARG HOST_UID=1000
+ARG HOST_GID=1000
 
 ENV DEBIAN_FRONTEND=noninteractive \
     TZ=UTC \
@@ -42,3 +44,8 @@ RUN echo 'alias ll="ls -alF"' >> /etc/bash.bashrc
 
 USER ${USER}
 WORKDIR /workspaces
+
+# Align container user IDs with host so bind mounts are writable
+RUN groupmod -o -g ${HOST_GID} vscode && \
+    usermod -o -u ${HOST_UID} -g ${HOST_GID} vscode && \
+    chown -R ${HOST_UID}:${HOST_GID} /home/vscode

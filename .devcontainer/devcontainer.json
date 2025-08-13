@@ -3,7 +3,9 @@
   "build": {
     "dockerfile": "Dockerfile",
     "args": {
-      "UBUNTU_VERSION": "24.04"
+      "UBUNTU_VERSION": "24.04",
+      "HOST_UID": "1000",
+      "HOST_GID": "1000"
     }
   },
   "features": {},
