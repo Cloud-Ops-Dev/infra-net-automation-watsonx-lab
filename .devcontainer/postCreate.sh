@@ -28,3 +28,30 @@ aws --version || true
 ibmcloud -v || true
 python --version || true
 pip --version || true
+# ------------------ BEGIN aws-local bootstrap ------------------
+echo "[postCreate] Syncing AWS creds to ~/.aws-local and setting env vars"
+
+mkdir -p "$HOME/.aws-local"
+for f in credentials config; do
+  if [ -r "$HOME/.aws/$f" ]; then
+    cp -f "$HOME/.aws/$f" "$HOME/.aws-local/$f"
+  fi
+done
+
+chown -R "$USER":"$USER" "$HOME/.aws-local" 2>/dev/null || true
+chmod 700 "$HOME/.aws-local" || true
+[ -f "$HOME/.aws-local/config" ] && chmod 600 "$HOME/.aws-local/config" || true
+[ -f "$HOME/.aws-local/credentials" ] && chmod 600 "$HOME/.aws-local/credentials" || true
+
+if ! grep -q "BEGIN AWS_LOCAL_COPY" "$HOME/.bashrc" 2>/dev/null; then
+  cat >> "$HOME/.bashrc" <<'EOS'
+# BEGIN AWS_LOCAL_COPY
+export AWS_SHARED_CREDENTIALS_FILE="$HOME/.aws-local/credentials"
+export AWS_CONFIG_FILE="$HOME/.aws-local/config"
+# END AWS_LOCAL_COPY
+EOS
+fi
+
+export AWS_SHARED_CREDENTIALS_FILE="$HOME/.aws-local/credentials"
+export AWS_CONFIG_FILE="$HOME/.aws-local/config"
+# ------------------- END aws-local bootstrap -------------------

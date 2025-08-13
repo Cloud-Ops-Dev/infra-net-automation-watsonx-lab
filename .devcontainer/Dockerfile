@@ -46,6 +46,3 @@ USER ${USER}
 WORKDIR /workspaces
 
 # Align container user IDs with host so bind mounts are writable
-RUN groupmod -o -g ${HOST_GID} vscode && \
-    usermod -o -u ${HOST_UID} -g ${HOST_GID} vscode && \
-    chown -R ${HOST_UID}:${HOST_GID} /home/vscode
