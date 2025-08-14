@@ -34,3 +34,18 @@ Thumbs.db
 *.tfstate
 *.tfstate.backup
 .terraform/
+# --- secrets & env ---
+.env
+*.env
+.env.*.local
+.envrc
+.secrets/
+*.key
+*.pem
+*.p12
+# Python
+.venv/
+__pycache__/
+*.pyc
+# VSCode
+.vscode/*.log

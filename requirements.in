@@ -1,0 +1,17 @@
+setuptools
+setuptools
+# Infra + automation
+ansible
+boto3
+botocore
+
+# WatsonX SDK + helpers
+ibm-watsonx-ai
+python-dotenv
+pydantic
+typer
+rich
+
+# Optional: notebooks & data
+jupyter
+pandas
