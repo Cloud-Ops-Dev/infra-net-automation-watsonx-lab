@@ -7,7 +7,14 @@ ACTIVATE := . $(VENV_DIR)/bin/activate
 # Default goal
 .DEFAULT_GOAL := help
 
+# -------- HELP SYSTEM --------
 .PHONY: help
+help: ## Show this help
+	@echo ""
+	@echo "Available Make targets:"
+	@awk 'BEGIN {FS = ":.*##"; OFS="";} /^[a-zA-Z0-9_.-]+:.*##/ 	{printf "  [36m%-25s[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST) | sort
+	@echo ""
+	@echo "Tip: run 'make <target>' to execute a target."
 help: ## Show this help
 	@awk 'BEGIN{FS":.*##"; printf "\nTargets:\n"} /^[a-zA-Z0-9_.-]+:.*##/{printf "  \033[36m%-22s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
@@ -78,4 +85,17 @@ tf-destroy: ## Terraform destroy (auto-approve) (aws)
 shell: venv ## Open an activated shell
 	@echo "Activating $(VENV_DIR). Press Ctrl-D to exit."
 	@bash --rcfile <(echo "$(ACTIVATE); PS1='($(VENV_DIR)) $$PS1'")
+
+
+.PHONY: test-commit
+test-commit: ## Dry-run the pre-commit secret scan on staged changes
+	@echo "Running pre-commit dry run on STAGED changes..."
+	@git diff --cached | grep -E '^[+-].*(AWS(_|-)SECRET|AWS(_|-)ACCESS|IBM_CLOUD_API_KEY|WATSONX_.*KEY|BEGIN RSA PRIVATE KEY)[[:space:]]*=' >/dev/null && \
+	 (echo "❌ Would be blocked: secret-like ASSIGNMENT found in staged diff."; exit 1) || \
+	 (echo "✓ Clean: no secret-like assignments detected in staged diff."; exit 0)
+test-commit: ## Dry-run the pre-commit secret scan on staged changes
+	@echo "Running pre-commit dry run on STAGED changes..."
+	@git diff --cached | grep -E '^[+-].*(AWS(_|-)SECRET|AWS(_|-)ACCESS|IBM_CLOUD_API_KEY|WATSONX_.*KEY|BEGIN RSA PRIVATE KEY)[[:space:]]*=' >/dev/null && \
+	 (echo "❌ Would be blocked: secret-like ASSIGNMENT found in staged diff."; exit 1) || \
+	 (echo "✓ Clean: no secret-like assignments detected in staged diff."; exit 0)
 
